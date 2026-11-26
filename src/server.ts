@@ -1,0 +1,10 @@
+import app from "./app";
+import { config } from "./config/config";
+
+const main = () => {
+  app.listen(config.port, () => {
+    console.log(`server is running on port ${config.port}`);
+  });
+};
+
+main();
