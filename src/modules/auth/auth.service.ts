@@ -1,4 +1,5 @@
 import { pool } from "../../db";
+import { jwtHelper } from "../../utils/jwtHelper";
 import { passwordHelper } from "../../utils/passwordHelper";
 import type { IUser } from "./auth.interface";
 
@@ -23,6 +24,41 @@ const createUserIntoDB = async (payload: IUser) => {
   return result.rows[0];
 };
 
+const loginUserFromDB = async (payload: {
+  email: string;
+  password: string;
+}) => {
+  const userData = await pool.query(
+    `
+    SELECT * FROM users WHERE email=$1
+    `,
+    [payload.email],
+  );
+
+  const isPasswordSame = await passwordHelper.isPasswordSame(
+    payload.password,
+    userData.rows[0].password,
+  );
+
+  console.log(isPasswordSame);
+
+  if (userData.rowCount === 0 || !isPasswordSame) {
+    throw new Error("Invalid email or password!");
+  }
+
+  const user = userData.rows[0];
+  delete user.password;
+  delete user.created_at;
+  delete user.updated_at;
+
+  const jwtPayload = { ...user };
+
+  const token = jwtHelper.generateToken(jwtPayload);
+
+  return { token, user };
+};
+
 export const authService = {
   createUserIntoDB,
+  loginUserFromDB,
 };

@@ -5,6 +5,7 @@ import express, {
 } from "express";
 import cors from "cors";
 import authRoute from "./modules/auth/auth.route";
+import globalErrorHandler from "./middleware/globalErrorHandler";
 
 const app: Application = express();
 
@@ -18,6 +19,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/api/v1/auth/", authRoute);
+
+app.use(globalErrorHandler);
 
 app.get("/", (req: Request, res: Response) => {
   res.send({
