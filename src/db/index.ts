@@ -20,6 +20,23 @@ export const initDB = async () => {
       );
       `);
 
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS events(
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        category VARCHAR(255) NOT NULL,
+        date TIMESTAMP NOT NULL,
+        location TEXT NOT NULL,
+        total_seats INT NOT NULL CHECK(total_seats>0),
+        available_seats INT NOT NULL CHECK(available_seats>=0 AND available_seats<=total_seats),
+        price DECIMAL(10,2) NOT NULL CHECK(price>=0),
+        organizer_id INT REFERENCES userS(id) ON DELETE CASCADE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        `);
+
     console.log("Database connected successfully!!");
   } catch (error) {
     console.log(error);
