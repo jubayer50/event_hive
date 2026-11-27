@@ -1,5 +1,5 @@
 import { pool } from "../../db";
-import AppError from "../../utils/appError";
+import AppError from "../../utils/AppError";
 import { jwtHelper } from "../../utils/jwtHelper";
 import { passwordHelper } from "../../utils/passwordHelper";
 import type { IUser } from "./auth.interface";
@@ -41,7 +41,7 @@ const loginUserFromDB = async (payload: {
     userData.rows[0].password,
   );
 
-  console.log(isPasswordSame);
+
 
   if (userData.rowCount === 0 || !isPasswordSame) {
     throw new AppError(401, "Invalid email or password!");
