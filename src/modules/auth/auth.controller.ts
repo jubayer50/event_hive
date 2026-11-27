@@ -1,17 +1,20 @@
 import type { Request, Response } from "express";
 import { authService } from "./auth.service";
+import sendResponse from "../../utils/sendResponse";
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const result = await authService.createUserIntoDB(req.body);
 
-    res.status(201).send({
+    sendResponse(res, {
+      statusCode: 201,
       success: true,
-      message: "User register successfully!!",
+      message: "User registered successfully!",
       data: result,
     });
   } catch (error: any) {
-    res.status(500).send({
+    sendResponse(res, {
+      statusCode: 500,
       success: false,
       message: error.message,
       error: error,
