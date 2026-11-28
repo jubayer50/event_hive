@@ -1,7 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 import sendResponse from "../utils/sendResponse";
+import type { UserRole } from "../types";
 
-const verifyUserRole = (...roles: any[]) => {
+const verifyUserRole = (...roles: UserRole[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
 

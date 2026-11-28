@@ -47,6 +47,15 @@ const createEventIntoDB = async (payload: IEvent) => {
   return result.rows[0];
 };
 
+const getAllEventsFromDB = async () => {
+  const result = await pool.query(`
+    SELECT * FROM events
+    `);
+
+  return result.rows;
+};
+
 export const eventService = {
   createEventIntoDB,
+  getAllEventsFromDB,
 };

@@ -21,6 +21,27 @@ const createEvent = async (req: Request, res: Response) => {
   }
 };
 
+const getAllEvents = async (req: Request, res: Response) => {
+  try {
+    const result = await eventService.getAllEventsFromDB();
+
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "All events retrieved successfully!",
+      data: result,
+    });
+  } catch (error: any) {
+    sendResponse(res, {
+      statusCode: 500,
+      success: false,
+      message: error.message,
+      error: error,
+    });
+  }
+};
+
 export const eventController = {
   createEvent,
+  getAllEvents,
 };
